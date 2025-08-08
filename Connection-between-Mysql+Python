@@ -1,1 +1,39 @@
-Import All required libraries for analysis
+-- Import All required libraries for analysis
+
+import pandas as pd
+import mysql.connector
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings('ignore')
+import os
+pip install mysql-connector-python
+
+Requirement already satisfied: mysql-connector-python in c:\users\hp\anaconda3\lib\site-packages (9.4.0)
+Note: you may need to restart the kernel to use updated packages.
+
+-- Create connection between python to mysql and read all csv tables into mysql database
+
+
+from sqlalchemy import create_engine
+engine = create_engine("mysql+mysqldb://root:root123@127.0.0.1:3306/ecommerce")
+files = ['customers','geolocation','order_items','orders','payments','products','sellers']
+conn = engine.connect()
+for file in files:
+    data = pd.read_csv(rf"D:\Project\E-commerce\{file}.csv")
+    data.to_sql(file, engine, index = False, if_exists='replace')
+
+
+-- Create and Activate Cursor for query execution
+import mysql.connector
+
+db=mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    password = 'root123',
+    database = 'ecommerce',
+    use_pure=True
+)
+
+cur = db.cursor()
